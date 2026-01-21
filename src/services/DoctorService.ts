@@ -1,8 +1,10 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
 import { Doctor } from '../models/doctor';
 
-//const API_URL = 'http://localhost:5001/api';
-const API_BASE_URL = 'http://10.0.2.2:5001/api';
+const API_BASE_URL = Platform.OS === 'android'
+  ? 'http://10.0.2.2:5001/api'
+  : 'http://localhost:5001/api';
 
 export const DoctorService = {
   // Get all doctors
@@ -32,7 +34,7 @@ export const DoctorService = {
     try {
       const response = await axios.get(`${API_BASE_URL}/doctors/${id}`);
       if (!response.data) return null;
-      
+
       return {
         id: response.data._id,
         name: response.data.name,
@@ -78,7 +80,7 @@ export const DoctorService = {
     try {
       const response = await axios.put(`${API_BASE_URL}/doctors/${id}`, doctor);
       if (!response.data) return null;
-      
+
       return {
         id: response.data._id,
         name: response.data.name,

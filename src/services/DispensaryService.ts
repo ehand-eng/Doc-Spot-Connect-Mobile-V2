@@ -1,11 +1,10 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
 import { Dispensary } from '../models/dispensary';
 
-// Set this to the correct base URL for your environment:
-// Android emulator: 'http://10.0.2.2:5001/api'
-// iOS simulator: 'http://localhost:5001/api'
-// Real device: 'http://<your-computer-ip>:5001/api'
-const API_BASE_URL = 'http://10.0.2.2:5001/api';
+const API_BASE_URL = Platform.OS === 'android'
+  ? 'http://10.0.2.2:5001/api'
+  : 'http://localhost:5001/api';
 
 const DispensaryService = {
   getAllDispensaries: async (): Promise<Dispensary[]> => {

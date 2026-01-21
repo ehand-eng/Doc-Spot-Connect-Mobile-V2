@@ -16,7 +16,11 @@ if (!mongoUri) {
 }
 
 // Connect to MongoDB
-mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000
+})
   .then(async () => {
     console.log('MongoDB connected');
     // Fetch and print all data from all collections

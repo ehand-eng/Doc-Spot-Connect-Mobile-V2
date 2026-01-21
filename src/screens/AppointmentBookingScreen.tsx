@@ -31,21 +31,21 @@ function generateId() {
 function generateAvailableDates() {
   const dates = [];
   const today = new Date();
-  
+
   for (let i = 0; i < 14; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
     dates.push({
       date: date,
       dayName: date.toLocaleDateString('en-US', { weekday: 'long' }),
-      dateString: date.toLocaleDateString('en-US', { 
-        month: 'short', 
+      dateString: date.toLocaleDateString('en-US', {
+        month: 'short',
         day: 'numeric',
         year: 'numeric'
       })
     });
   }
-  
+
   return dates;
 }
 
@@ -81,13 +81,13 @@ export default function AppointmentBookingScreen({ navigation }: Props) {
   const [timeSlotsError, setTimeSlotsError] = useState<string | null>(null);
 
   useEffect(() => {
-    
-      console.log('useEffect: selectedDoctor changed:', selectedDoctor);
-    
+
+    console.log('useEffect: selectedDoctor changed:', selectedDoctor);
+
   }, [selectedDoctor]);
 
   useEffect(() => {
-   console.log (
+    console.log(
       'Welcome!',
       'This alert shows when the app starts.'
     );
@@ -104,7 +104,8 @@ export default function AppointmentBookingScreen({ navigation }: Props) {
         setFetchedTimeSlots([]);
         try {
           // Use both doctorId and dispensaryId in the API call
-          const url = `http://192.168.8.193:5001/api/timeslots/next-available/${selectedDoctor}/${selectedDispensary}`;
+          const baseUrl = Platform.OS === 'android' ? 'http://10.0.2.2:5001' : 'http://localhost:5001';
+          const url = `${baseUrl}/api/timeslots/next-available/${selectedDoctor}/${selectedDispensary}`;
           console.log('Fetching:', url);
           const response = await fetch(url);
           console.log('Response status:', response.status);
@@ -189,7 +190,7 @@ export default function AppointmentBookingScreen({ navigation }: Props) {
     setLoading(true);
     const bookingData = {
       patientId: "temp-0762199100", // Replace with actual patient ID
-         selectedDoctor,
+      selectedDoctor,
       dispensaryId: selectedDispensary,
       bookingDate: selectedDate,
       timeSlot: `${selectedTime}-${getEndTime(selectedTime)}`,
@@ -204,7 +205,8 @@ export default function AppointmentBookingScreen({ navigation }: Props) {
       patientEmail: patientEmail,
     };
     try {
-      const response = await axios.post('http://10.0.2.2:5001/api/bookings', bookingData);
+      const baseUrl = Platform.OS === 'android' ? 'http://10.0.2.2:5001' : 'http://localhost:5001';
+      const response = await axios.post(`${baseUrl}/api/bookings`, bookingData);
       setBookingDetails(response.data);
       setConfirmed(true);
     } catch (error) {
@@ -222,7 +224,7 @@ export default function AppointmentBookingScreen({ navigation }: Props) {
       console.log(`${index + 1}. ${disp.name}: lat=${disp.latitude}, lng=${disp.longitude}`);
     });
 
-  
+
     setLocationLoading(true);
     try {
       // Request permission (Android)
@@ -236,7 +238,7 @@ export default function AppointmentBookingScreen({ navigation }: Props) {
           return;
         }
       }
-      
+
       // For iOS, permissions are handled in Info.plist
       Geolocation.getCurrentPosition(
         position => {
@@ -247,27 +249,27 @@ export default function AppointmentBookingScreen({ navigation }: Props) {
           console.log('Longitude:', longitude);
           console.log('Coordinates:', { latitude, longitude });
           console.log('===============================');
-          
+
           const filtered = dispensaries.filter(d => {
             const distance = getDistanceFromLatLonInKm(latitude, longitude, d.latitude, d.longitude);
             console.log(`Distance to ${d.name}: ${distance.toFixed(2)}km`);
             return distance <= 1;
           });
-          
+
           console.log('Filtered dispensaries within 1km:', filtered);
           console.log('Number of nearby dispensaries found:', filtered.length);
-          
+
           setFilteredDispensaries(filtered);
           setNearbyMode(true);
-          
+
           if (filtered.length === 0) {
             Alert.alert(
-              'No nearby dispensaries', 
+              'No nearby dispensaries',
               'No dispensaries found within 1km of your location. Try selecting from all dispensaries instead.'
             );
           } else {
             Alert.alert(
-              'Nearby dispensaries found', 
+              'Nearby dispensaries found',
               `Found ${filtered.length} dispensary(ies) within 1km of your location.`
             );
           }
@@ -276,7 +278,7 @@ export default function AppointmentBookingScreen({ navigation }: Props) {
         error => {
           console.error('Geolocation error:', error);
           Alert.alert(
-            'Location Error', 
+            'Location Error',
             'Could not get your location. Please check your GPS settings and try again.'
           );
           setLocationLoading(false);
@@ -366,12 +368,12 @@ export default function AppointmentBookingScreen({ navigation }: Props) {
                       ))}
                     </Picker>
                   </View>
-                  <TouchableOpacity 
-                    onPress={findNearbyDispensaries} 
+                  <TouchableOpacity
+                    onPress={findNearbyDispensaries}
                     style={[
-                      styles.submitButton, 
+                      styles.submitButton,
                       locationLoading && { backgroundColor: '#6c757d', opacity: 0.7 }
-                    ]} 
+                    ]}
                     disabled={locationLoading}
                   >
                     <Text style={styles.submitButtonText}>

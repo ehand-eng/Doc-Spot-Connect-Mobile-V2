@@ -1,4 +1,13 @@
 {
-  "name": "MyNewApp",
-  "displayName": "MyNewApp"
+  "expo": {
+    "name": "Doc-Spot-Connect",
+    "slug": "doc-spot-connect",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "newArchEnabled": true
+  }
 }
