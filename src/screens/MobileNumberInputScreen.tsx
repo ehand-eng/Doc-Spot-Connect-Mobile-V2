@@ -36,6 +36,7 @@ export default function MobileNumberInputScreen({ navigation }: Props) {
     };
 
     const handleContinue = async () => {
+        console.log('Mobile Number:', mobileNumber);
         // Validate mobile number
         if (mobileNumber.length !== 10) {
             Alert.alert('Invalid Mobile Number', 'Please enter a valid 10-digit mobile number');
@@ -45,6 +46,7 @@ export default function MobileNumberInputScreen({ navigation }: Props) {
         setIsLoading(true);
 
         try {
+            console.log('Checking mobile number...');
             const response = await authService.checkMobileNumber(mobileNumber);
 
             if (response.userExists) {
@@ -90,12 +92,12 @@ export default function MobileNumberInputScreen({ navigation }: Props) {
                             editable={!isLoading}
                         />
                     </View>
-                    <Text style={styles.hint}>Enter your 10-digit mobile number</Text>
+                    <Text style={styles.hint}>Enter your 10-digit mobile number 1111</Text>
 
                     <TouchableOpacity
                         style={[styles.button, isLoading && styles.buttonDisabled]}
                         onPress={handleContinue}
-                        disabled={isLoading || mobileNumber.length !== 10}
+                        disabled={isLoading}
                     >
                         {isLoading ? (
                             <ActivityIndicator color="#ffffff" />
