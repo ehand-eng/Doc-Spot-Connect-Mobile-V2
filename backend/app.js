@@ -10,6 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
+app.use('/api/users', require('./routes/user'));
+app.use('/api/mobile/auth', require('./routes/mobileAuth'));
 app.use('/api/doctors', require('./routes/doctor'));
 app.use('/api/dispensaries', require('./routes/dispensary'));
 app.use('/api/bookings', require('./routes/booking'));

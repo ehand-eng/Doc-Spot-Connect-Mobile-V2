@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../App';
 import { Doctor } from '../models/doctor';
 import { useDataContext } from '../DataContext';
 
@@ -37,7 +37,7 @@ export default function DoctorListScreen({ navigation }: Props) {
           </View>
         </View>
       </View>
-      
+
       <View style={styles.slotsContainer}>
         <Text style={styles.slotsTitle}>Available Slots:</Text>
         <View style={styles.slotsList}>
@@ -59,10 +59,20 @@ export default function DoctorListScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Available Doctors</Text>
-        <Text style={styles.headerSubtitle}>
-          Choose from our qualified medical professionals
-        </Text>
+        <View style={styles.headerContent}>
+          <View>
+            <Text style={styles.headerTitle}>Available Doctors</Text>
+            <Text style={styles.headerSubtitle}>
+              Choose from our qualified medical professionals
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.accountButton}
+            onPress={() => navigation.navigate('Account')}
+          >
+            <Text style={styles.accountIcon}>👤</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <FlatList
@@ -87,6 +97,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e9ecef',
   },
+  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -96,6 +111,22 @@ const styles = StyleSheet.create({
   headerSubtitle: {
     fontSize: 14,
     color: '#7f8c8d',
+  },
+  accountButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#4A90E2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  accountIcon: {
+    fontSize: 24,
   },
   listContainer: {
     padding: 16,
