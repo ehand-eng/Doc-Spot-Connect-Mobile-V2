@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Configure your server IP address here
-const API_BASE_URL = 'http://112.134.134.49:5001/api'; // Change to your server IP
+const API_BASE_URL = 'http://localhost:5001/api'; // Change to your server IP
 
 export interface User {
     id: string;
@@ -29,6 +29,7 @@ class AuthService {
      */
     async checkMobileNumber(mobile: string): Promise<AuthResponse> {
         try {
+            console.log('---------Checking mobile number...');
             const response = await axios.get(`${API_BASE_URL}/users/mobile/${mobile}`);
             return response.data;
         } catch (error: any) {
