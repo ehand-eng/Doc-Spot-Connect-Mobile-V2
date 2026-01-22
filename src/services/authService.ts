@@ -187,6 +187,7 @@ class AuthService {
             await AsyncStorage.removeItem('authToken');
             await AsyncStorage.removeItem('user');
             this.token = null;
+            console.log('User logged out successfully');
         } catch (error) {
             console.error('Error during logout:', error);
             throw new Error('Failed to logout');

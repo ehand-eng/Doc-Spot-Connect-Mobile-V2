@@ -36,11 +36,8 @@ export default function AccountScreen({ navigation }: Props) {
                     onPress: async () => {
                         try {
                             await logout();
-                            // Navigate to Mobile Number Input
-                            navigation.reset({
-                                index: 0,
-                                routes: [{ name: 'MobileNumberInput' }],
-                            });
+                            // Navigation will be handled automatically by App.tsx
+                            // when isAuthenticated changes to false
                         } catch (error) {
                             Alert.alert('Error', 'Failed to logout. Please try again.');
                         }
